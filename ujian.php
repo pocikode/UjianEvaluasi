@@ -1,5 +1,8 @@
 <?php
-require 'function.php';
+/*
+ * Program Input Nilai
+*/
+define('NAMA', 'Agus Supriyatna');
 
 echo "==>> Selamat datang di Program Input Nilai Ujian <<== \n";
 
@@ -36,8 +39,11 @@ while (true) {
 		}
 		echo "\n";
 
+		$sortNilai = array_column($lists, 'nilai');
+		$sortNama  = array_column($lists, 'nama');
+
 		// Sortir berdasarkan nama
-		usort($lists, buildSorter('nama'));
+		array_multisort($sortNama, SORT_ASC, $lists);
 
 		// Cetak nama => nilai
 		foreach ($lists as $list) {
@@ -45,19 +51,21 @@ while (true) {
 		}
 
 		echo "===> Nilai Lulus <=== \n";
-		// Nilai lulus
-		usort($lists, buildSorter('nilai'));
+
+		// Nilai Lulus
+		array_multisort($sortNilai, SORT_DESC, $lists);
 		foreach ($lists as $list) {
 			if ($list['nilai'] > 5) {
-				$nilaiPersen = $list['nilai']*10;
+				$nilaiPersen = $list['nilai'] * 10;
 				echo "Nilai ujian $list[nama] telah mencukupi. Capaian $nilaiPersen%";
 				echo "\n";
 			}
 		}
 
 		echo "===> Nilai Tidak Lulus <=== \n";
+		
 		// Nilai tidak lulus
-		uasort($lists, buildSorter('nilai'));
+		array_multisort($sortNilai, SORT_ASC, $lists);
 		foreach ($lists as $list) {
 			if ($list['nilai'] <= 5) {
 				$nilaiPersen = $list['nilai']*10;
@@ -65,7 +73,29 @@ while (true) {
 				echo "\n";
 			}
 		}
+		echo "\n";
 
+		$max = "Nilai TERTINGGI adalah ";
+		$min = "Nilai TERENDAH adalah ";
+
+		foreach ($lists as $list) {
+			// Nilai tertinggi
+			if ($list['nilai'] == max($sortNilai)) {
+				$max .= $list['nama'] ." dengan nilai ". $list['nilai'] ."\n";
+			}
+			// NIlai terendah
+			if ($list['nilai'] == min($sortNilai)) {
+				$min .= $list['nama'] ." dengan nilai ". $list['nilai'] ."\n";
+			}
+		}
+
+		echo($max);
+		echo($min);
+		echo("\n");
+
+		echo "Program ini dibuat dengan bahasa pemrograman PHP ".phpversion()." oleh ".NAMA;
+		echo "\n";
+		echo "\n";
 		break;
 	}
 }
