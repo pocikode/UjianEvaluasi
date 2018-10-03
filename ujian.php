@@ -11,11 +11,24 @@ while (true) {
 	// Nama Peserta Ujian
 	echo "Masukan Nama Peserta : ";
 	$nama = ucwords(trim(fgets(STDIN)));
+	while (is_null($nama) || is_int($nama) || $nama == '' || $nama == ' ') {
+		echo "Masukan nama yang benar! : ";
+		$nama = ucwords(trim(fgets(STDIN)));
+	}
 
 	// Nilai Peserta Ujian
 	echo "Masukan Nilai $nama : ";
-	$nilai = trim(fgets(STDIN));
-	echo "Nilai $nama adalah $nilai\n";
+	$nilai = (int)trim(fgets(STDIN));
+	while (is_null($nilai) || is_string($nilai) || $nilai == '' || $nilai == ' ' || $nilai > 10) {
+		if ($nilai > 10) {
+			echo "Rentang nilai HARUS antara 0 - 10! \n";
+			echo "Masukan Nilai $nama : ";
+			$nilai = (int)trim(fgets(STDIN));
+		} else {
+			echo "Masukan nilai yang benar! : ";
+			$nilai = (int)trim(fgets(STDIN));
+		}
+	}
 
 	// Ubah nama dan nilai ke bentuk array, gabungkan ke variabel $lists
 	$peserta = ['nama' => $nama, 'nilai' => $nilai];
